@@ -81,10 +81,6 @@
     }
 
     .map-topbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      flex-shrink: 0;
       min-height: 52px;
       display: flex;
       align-items: center;
@@ -136,8 +132,7 @@
 
     #map {
       position: absolute;
-      top: 0;
-      right: 0;
+          right: 0;
       bottom: 0;
       left: 0;
       width: 100%;
@@ -1401,26 +1396,6 @@ function showPlace(key) {
       </div>
 
     `;
-
-  if (
-    window.innerWidth <= 620
-  ) {
-
-    setTimeout(
-      function() {
-
-        document
-          .getElementById("info")
-          .scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-
-      },
-      100
-    );
-
-  }
 
 }
 
