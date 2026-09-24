@@ -1413,20 +1413,6 @@ function returnToRegionalMap() {
 
   showRegionalMap();
 
-  setTimeout(function() {
-
-    const topbar =
-      document.getElementById("mapTopbar");
-
-    if (topbar) {
-      topbar.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-  }, 80);
-
 }
 
 
@@ -1711,7 +1697,7 @@ function showMadinahArea() {
   currentView = "madinah";
   clearLabelMarkers();
 
-  document.getElementById("backButton").style.display = "inline-block";
+  document.getElementById("backButton").style.display = "none";
   document.getElementById("mapTitle").textContent = "Madinah Area";
   document.getElementById("mapCount").textContent = "4 locations";
 
