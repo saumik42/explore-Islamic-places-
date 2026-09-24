@@ -1443,15 +1443,6 @@ function showPlace(key) {
   document
     .getElementById("info")
     .innerHTML = `
-
-      ${currentView !== "regional" ? `
-        <div class="card-nav top">
-          <button class="back" onclick="returnToRegionalMap()">
-            ← Back to Regional Map
-          </button>
-        </div>
-      ` : ""}
-
       <h3>📍 ${p.name}</h3>
 
       <div class="location">
