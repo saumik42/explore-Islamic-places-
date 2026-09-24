@@ -122,6 +122,13 @@
       background: #f4f8ff;
     }
 
+
+    .card-nav {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #e3ebf4;
+    }
+
     .map-holder {
       position: relative;
       width: 100%;
@@ -435,7 +442,7 @@
       </div>
 
       <div class="count" id="mapCount">
-        10 locations to explore
+        13 locations to explore
       </div>
 
     </div>
@@ -487,7 +494,7 @@ const places = {
     lat: 31.778,
     lng: 35.235,
     description:
-      "Al-Quds is home to Al-Masjid Al-Aqsa, to which Allah took the Prophet Muhammad ﷺ during Al-Isra’, the Night Journey. The Qur’an describes Al-Aqsa and its surroundings as blessed.",
+      "Al-Quds is home to Al-Masjid Al-Aqsa, to which Allah took the Prophet Muhammad ﷺ during Al-Isra’, the Night Journey from Al-Masjid Al-Haram. The Qur’an also describes the surroundings of Al-Masjid Al-Aqsa as blessed.",
     reference: "Qur’an 17:1",
     url: "https://quran.com/17/1",
     photoFile: "Al-Aqsa Mosque (Jerusalem).jpg",
@@ -602,11 +609,11 @@ const places = {
       "Mina is one of the principal sites of Hajj. Pilgrims spend important days of the pilgrimage there, and the rites performed in the area include the stoning of the Jamarat.",
     reference: "Sahih Muslim 1218c",
     url: "https://sunnah.com/muslim:1218c",
-    photoFile: "Tents at Mina.JPG",
-    photoAlt: "Pilgrims' tents at Mina",
-    photoCaption: "The tent area of Mina",
+    photoFile: "Haji pilgrimage mina tent city.jpg",
+    photoAlt: "The tent city of Mina during the Hajj season",
+    photoCaption: "The tent city of Mina",
     photoSource:
-      "https://commons.wikimedia.org/wiki/File:Tents_at_Mina.JPG"
+      "https://commons.wikimedia.org/wiki/File:Haji_pilgrimage_mina_tent_city.jpg"
   },
 
   muzdalifah: {
@@ -623,6 +630,54 @@ const places = {
     photoCaption: "Muzdalifah during Hajj",
     photoSource:
       "https://commons.wikimedia.org/wiki/File:Fajr_in_Muzdalifah.jpg"
+  },
+
+  quba: {
+    name: "Masjid Quba",
+    location: "Madinah, Saudi Arabia",
+    lat: 24.439172,
+    lng: 39.618153,
+    description:
+      "Masjid Quba was the first mosque built in Islam, established following the Hijrah of the Prophet Muhammad ﷺ to Madinah. The Prophet ﷺ would also visit Masjid Quba every Saturday, sometimes walking and sometimes riding.",
+    reference: "Sahih al-Bukhari 1193",
+    url: "https://sunnah.com/bukhari:1193",
+    photoFile: "Quba Masjid.jpg",
+    photoAlt: "Masjid Quba in Madinah",
+    photoCaption: "Masjid Quba, Madinah",
+    photoSource:
+      "https://commons.wikimedia.org/wiki/File:Quba_Masjid.jpg"
+  },
+
+  qiblatayn: {
+    name: "Masjid al-Qiblatayn",
+    location: "Madinah, Saudi Arabia",
+    lat: 24.484157,
+    lng: 39.578811,
+    description:
+      "Masjid al-Qiblatayn is historically associated with the change of the Qiblah from Bayt al-Maqdis toward the Kaʿbah in Makkah. Allah commanded the Prophet Muhammad ﷺ and the believers to turn toward Al-Masjid Al-Haram in prayer.",
+    reference: "Qur’an 2:144",
+    url: "https://quran.com/2/144",
+    photoFile: "Masjid al-Qiblatain.jpg",
+    photoAlt: "Masjid al-Qiblatayn in Madinah",
+    photoCaption: "Masjid al-Qiblatayn, Madinah",
+    photoSource:
+      "https://commons.wikimedia.org/wiki/File:Masjid_al-Qiblatain.jpg"
+  },
+
+  sinai: {
+    name: "Mount Sinai (Ṭūr Sīnāʾ)",
+    location: "Sinai Peninsula, Egypt",
+    lat: 28.5394,
+    lng: 33.9753,
+    description:
+      "Mount Sinai is mentioned in the Qur’an and is connected with Prophet Mūsā (AS). The Qur’an refers explicitly to Ṭūr Sīnāʾ (Mount Sinai). The precise identification of the modern mountain traditionally called Jabal Musa with the Qur’anic location is not established by the verse itself.",
+    reference: "Qur’an 23:20",
+    url: "https://quran.com/23/20",
+    photoFile: "Mount Sinai Egypt 1.jpg",
+    photoAlt: "Mount Sinai in the Sinai Peninsula of Egypt",
+    photoCaption: "Mount Sinai, Sinai Peninsula",
+    photoSource:
+      "https://commons.wikimedia.org/wiki/File:Mount_Sinai_Egypt_1.jpg"
   },
 
   arafah: {
@@ -648,6 +703,7 @@ let labelMarkers = [];
 let locationLayersReady = false;
 let mapLoadedSuccessfully = false;
 let initialising = false;
+let currentView = "regional";
 
 
 /* ---------------------------------------------------------
@@ -1175,11 +1231,13 @@ function setupLocationLayers() {
 
 function activateLocation(key) {
 
-  if (
-    key === "makkahGateway"
-  ) {
+  if (key === "makkahGateway") {
 
     showMakkahArea();
+
+  } else if (key === "madinahGateway") {
+
+    showMadinahArea();
 
   } else {
 
@@ -1279,7 +1337,7 @@ function addClickableLabel(
   element.setAttribute(
     "aria-label",
     gateway
-      ? "Explore Makkah Area"
+      ? "Explore " + text.replace(" →", "")
       : "Learn about " + text
   );
 
@@ -1395,6 +1453,14 @@ function showPlace(key) {
 
       </div>
 
+      ${currentView !== "regional" ? `
+        <div class="card-nav">
+          <button class="back" onclick="showRegionalMap()">
+            ← Regional Map
+          </button>
+        </div>
+      ` : ""}
+
     `;
 
 }
@@ -1412,131 +1478,36 @@ function resetInfo(text) {
 
 function showRegionalMap() {
 
+  currentView = "regional";
   clearLabelMarkers();
 
-  document
-    .getElementById(
-      "backButton"
-    )
-    .style.display =
-    "none";
-
-  document
-    .getElementById(
-      "mapTitle"
-    )
-    .textContent =
-    "Regional Map";
-
-  document
-    .getElementById(
-      "mapCount"
-    )
-    .textContent =
-    "10 locations to explore";
+  document.getElementById("backButton").style.display = "none";
+  document.getElementById("mapTitle").textContent = "Regional Map";
+  document.getElementById("mapCount").textContent = "13 locations to explore";
 
   resetInfo(
     "Select a location on the map to learn more about its significance."
   );
 
   setLocationData([
-
-    makeFeature(
-      "quds",
-      places.quds.lng,
-      places.quds.lat
-    ),
-
-    makeFeature(
-      "madinah",
-      places.madinah.lng,
-      places.madinah.lat
-    ),
-
-    makeFeature(
-      "uhud",
-      places.uhud.lng,
-      places.uhud.lat
-    ),
-
-    makeFeature(
-      "badr",
-      places.badr.lng,
-      places.badr.lat
-    ),
-
-    makeFeature(
-      "makkahGateway",
-      places.makkah.lng,
-      places.makkah.lat
-    )
-
+    makeFeature("quds", places.quds.lng, places.quds.lat),
+    makeFeature("sinai", places.sinai.lng, places.sinai.lat),
+    makeFeature("badr", places.badr.lng, places.badr.lat),
+    makeFeature("madinahGateway", places.madinah.lng, places.madinah.lat),
+    makeFeature("makkahGateway", places.makkah.lng, places.makkah.lat)
   ]);
 
-  addClickableLabel(
-    "quds",
-    "Al-Quds (Jerusalem)",
-    places.quds.lng,
-    places.quds.lat,
-    80,
-    0,
-    false
-  );
-
-  addClickableLabel(
-    "uhud",
-    "Mount Uhud",
-    places.uhud.lng,
-    places.uhud.lat,
-    -72,
-    -27,
-    false
-  );
-
-  addClickableLabel(
-    "madinah",
-    "Madinah",
-    places.madinah.lng,
-    places.madinah.lat,
-    59,
-    25,
-    false
-  );
-
-  addClickableLabel(
-    "badr",
-    "Badr",
-    places.badr.lng,
-    places.badr.lat,
-    -45,
-    4,
-    false
-  );
-
-  addClickableLabel(
-    "makkahGateway",
-    "Makkah Area →",
-    places.makkah.lng,
-    places.makkah.lat,
-    75,
-    0,
-    true
-  );
+  addClickableLabel("quds", "Al-Quds (Jerusalem)", places.quds.lng, places.quds.lat, 80, 0, false);
+  addClickableLabel("sinai", "Mount Sinai", places.sinai.lng, places.sinai.lat, -58, 4, false);
+  addClickableLabel("badr", "Badr", places.badr.lng, places.badr.lat, -45, 4, false);
+  addClickableLabel("madinahGateway", "Madinah Area →", places.madinah.lng, places.madinah.lat, 78, -8, true);
+  addClickableLabel("makkahGateway", "Makkah Area →", places.makkah.lng, places.makkah.lat, 75, 0, true);
 
   map.fitBounds(
-    [
-      [34.15, 20.25],
-      [44.25, 32.75]
-    ],
+    [[33.25, 20.25], [44.25, 32.75]],
     {
-      padding: {
-        top: 38,
-        bottom: 38,
-        left: 42,
-        right: 42
-      },
-
-      maxZoom: 5.45,
+      padding: {top: 38, bottom: 38, left: 42, right: 42},
+      maxZoom: 5.35,
       duration: 650
     }
   );
@@ -1546,6 +1517,7 @@ function showRegionalMap() {
 
 function showMakkahArea() {
 
+  currentView = "makkah";
   clearLabelMarkers();
 
   document
@@ -1686,6 +1658,42 @@ function showMakkahArea() {
         right: 65
       },
 
+      duration: 650
+    }
+  );
+
+}
+
+
+function showMadinahArea() {
+
+  currentView = "madinah";
+  clearLabelMarkers();
+
+  document.getElementById("backButton").style.display = "inline-block";
+  document.getElementById("mapTitle").textContent = "Madinah Area";
+  document.getElementById("mapCount").textContent = "4 locations";
+
+  resetInfo(
+    "Select a location in the Madinah area to learn more."
+  );
+
+  setLocationData([
+    makeFeature("madinah", places.madinah.lng, places.madinah.lat),
+    makeFeature("uhud", places.uhud.lng, places.uhud.lat),
+    makeFeature("quba", places.quba.lng, places.quba.lat),
+    makeFeature("qiblatayn", places.qiblatayn.lng, places.qiblatayn.lat)
+  ]);
+
+  addClickableLabel("madinah", "Madinah", places.madinah.lng, places.madinah.lat, 58, 18, false);
+  addClickableLabel("uhud", "Mount Uhud", places.uhud.lng, places.uhud.lat, 0, -30, false);
+  addClickableLabel("quba", "Masjid Quba", places.quba.lng, places.quba.lat, 54, 26, false);
+  addClickableLabel("qiblatayn", "Masjid al-Qiblatayn", places.qiblatayn.lng, places.qiblatayn.lat, -74, -6, false);
+
+  map.fitBounds(
+    [[39.54, 24.41], [39.66, 24.55]],
+    {
+      padding: {top: 58, bottom: 58, left: 72, right: 72},
       duration: 650
     }
   );
