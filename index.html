@@ -430,6 +430,42 @@
         font-size: 13.5px;
       }
     }
+  
+    .welcome-card {
+      text-align: center;
+      padding: 12px 8px 4px;
+    }
+
+    .welcome-card .welcome-title {
+      margin: 0 0 8px;
+      color: #245da8;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .welcome-card .welcome-text {
+      margin: 0 auto 14px;
+      max-width: 520px;
+      color: #748196;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .welcome-illustration {
+      width: 150px;
+      max-width: 45%;
+      height: auto;
+      margin: 2px auto 12px;
+      display: block;
+    }
+
+    .welcome-meta {
+      color: #748196;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: .1px;
+    }
+
   </style>
 </head>
 
@@ -1504,9 +1540,59 @@ function showRegionalMap() {
   document.getElementById("mapTitle").textContent = "Regional Map";
   document.getElementById("mapCount").textContent = "13 locations to explore";
 
-  resetInfo(
-    "Select a location on the map to learn more about its significance."
-  );
+  document
+    .getElementById("info")
+    .innerHTML = `
+      <div class="welcome-card">
+
+        <div class="welcome-title">
+          📍 Select a Location
+        </div>
+
+        <div class="welcome-text">
+          Select a location on the map to learn more about its significance.
+        </div>
+
+        <svg class="welcome-illustration"
+             viewBox="0 0 220 130"
+             role="img"
+             aria-label="Map and location pin illustration">
+
+          <g fill="none"
+             stroke="#b9d2ef"
+             stroke-width="3"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+
+            <path d="M20 92 L63 72 L105 90 L151 67 L200 84" />
+            <path d="M20 92 L20 42 L63 24 L105 43 L151 20 L200 37 L200 84" />
+            <path d="M63 24 L63 72" />
+            <path d="M105 43 L105 90" />
+            <path d="M151 20 L151 67" />
+
+          </g>
+
+          <g transform="translate(89 25)">
+            <path d="M21 0
+                     C9.4 0 0 9.4 0 21
+                     C0 37 21 58 21 58
+                     C21 58 42 37 42 21
+                     C42 9.4 32.6 0 21 0Z"
+                  fill="#eaf3ff"
+                  stroke="#2f73d8"
+                  stroke-width="3"/>
+            <circle cx="21" cy="21" r="7"
+                    fill="#2f73d8"/>
+          </g>
+
+        </svg>
+
+        <div class="welcome-meta">
+          13 significant locations • Qur’an • Sunnah • Islamic history
+        </div>
+
+      </div>
+    `;
 
   setLocationData([
     makeFeature("quds", places.quds.lng, places.quds.lat),
