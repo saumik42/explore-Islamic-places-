@@ -124,9 +124,29 @@
 
 
     .card-nav {
-      margin-top: 16px;
+      margin: 14px 0;
+    }
+
+    .card-nav.top {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .card-nav.bottom {
+      margin-top: 18px;
       padding-top: 14px;
       border-top: 1px solid #e3ebf4;
+    }
+
+    .card-nav .back {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--softBlue);
+      font-size: 13px;
+    }
+
+    .card-nav .back:hover {
+      background: #e7f1ff;
     }
 
     .map-holder {
@@ -427,7 +447,7 @@
 
   <div class="map-shell">
 
-    <div class="map-topbar">
+    <div class="map-topbar" id="mapTopbar">
 
       <button
         class="back"
@@ -1388,6 +1408,28 @@ function addClickableLabel(
 }
 
 
+
+function returnToRegionalMap() {
+
+  showRegionalMap();
+
+  setTimeout(function() {
+
+    const topbar =
+      document.getElementById("mapTopbar");
+
+    if (topbar) {
+      topbar.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+  }, 80);
+
+}
+
+
 function showPlace(key) {
 
   const p =
@@ -1401,6 +1443,14 @@ function showPlace(key) {
   document
     .getElementById("info")
     .innerHTML = `
+
+      ${currentView !== "regional" ? `
+        <div class="card-nav top">
+          <button class="back" onclick="returnToRegionalMap()">
+            ← Back to Regional Map
+          </button>
+        </div>
+      ` : ""}
 
       <h3>📍 ${p.name}</h3>
 
@@ -1454,9 +1504,9 @@ function showPlace(key) {
       </div>
 
       ${currentView !== "regional" ? `
-        <div class="card-nav">
-          <button class="back" onclick="showRegionalMap()">
-            ← Regional Map
+        <div class="card-nav bottom">
+          <button class="back" onclick="returnToRegionalMap()">
+            ← Back to Regional Map
           </button>
         </div>
       ` : ""}
